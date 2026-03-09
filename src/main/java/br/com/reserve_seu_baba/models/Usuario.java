@@ -41,6 +41,16 @@ public class Usuario {
 		this.admUsuario = admUsuario;
 	}
 	
+	public Usuario(
+			String nomeUsuario,
+			String emailUsuario,
+			String senhaUsuario
+	) {
+		this.nomeUsuario = nomeUsuario;
+		this.emailUsuario = emailUsuario;
+		this.senhaUsuario = senhaUsuario;
+	}
+	
 	public Usuario() {}
 	
 	

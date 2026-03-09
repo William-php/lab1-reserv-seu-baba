@@ -24,6 +24,20 @@ public class Campo {
 		this.precoCampo = precoCampo;
 	}
 	
+	public Campo(			
+			String tipoGramadoCampo,
+			float larguraCampo,
+			float comprimentoCampo,
+			String codCampo,
+			float precoCampo
+	) {		
+		this.tipoGramadoCampo = tipoGramadoCampo;
+		this.larguraCampo = larguraCampo;
+		this.comprimentoCampo = comprimentoCampo;
+		this.codCampo = codCampo;
+		this.precoCampo = precoCampo;
+	}
+	
 	public Campo() {}
 
 	public int getIdCampo() {

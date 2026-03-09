@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import br.com.reserve_seu_baba.models.Usuario;
 import br.com.reserve_seu_baba.utils.ConnectionSQL;
-import br.com.reserve_seu_baba.utils.ConnectionSQL;
+
 
 public class UsuarioDAO {
 	
@@ -48,13 +48,13 @@ public class UsuarioDAO {
 	public Usuario getUsuarioById(int id) throws Exception {
 		Connection conn = new ConnectionSQL().getConnection();
 		Usuario usuario = null;
-		String sql = "SELECT * FROM usuario WHERE usuarios.id_usuario = ? ";
+		String sql = "SELECT * FROM usuario WHERE usuario.id_usuario = ? ";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setInt(1, id);
-		
+		System.out.println("getUsuarioById: " + id);
 		ResultSet rs = ps.executeQuery();
 		
-		if (rs != null) {
+		if (rs.next()) {
 			usuario = new Usuario(
 					rs.getInt("id_usuario"),
 					rs.getString("nome_usuario"),
@@ -69,7 +69,7 @@ public class UsuarioDAO {
 	}
 	
 	public ArrayList<Usuario> getAllUsuarios() throws Exception {
-		Connection conn = new ConnectionSQL().getConnection();
+		Connection conn = new ConnectionSQL().getConnection();		
 		ArrayList<Usuario> listaUsuario = new ArrayList<Usuario>();
 		
 		String sql = "SELECT * FROM usuario";
@@ -91,24 +91,20 @@ public class UsuarioDAO {
 		return listaUsuario;
 	}
 	
-	public int updateUsuario(Usuario usuarioAtualizado,int id) throws Exception {
+	public int updateUsuario(Usuario usuarioAtualizado, int id) throws Exception {
 		Connection conn = new ConnectionSQL().getConnection();		
 		
 		int result = 0;
-		String sql = "UPDATE usuario"
-				+ "SET nome_usuario = ?,"
-				+ "email_usuario = ?,"
-				+ "senha_usuario = ?,"
-				+ "data_nascimento_usuario = ?,"
-				+ "adm_usuario = ?"
-				+ "WHERE id_usuario = ?";
+		String sql = "UPDATE usuario "
+				+ "SET nome_usuario = ?, "
+				+ "email_usuario = ?, "
+				+ "senha_usuario = ? "							
+				+ "WHERE id_usuario = ?;";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setString(1, usuarioAtualizado.getNomeUsuario());
 		ps.setString(2, usuarioAtualizado.getEmailUsuario());
-		ps.setString(3, usuarioAtualizado.getSenhaUsuario());
-		ps.setString(4, usuarioAtualizado.getDataNascimentoUsuario().toString());
-		ps.setBoolean(5, usuarioAtualizado.isAdmUsuario());
-		ps.setInt(6, id);
+		ps.setString(3, usuarioAtualizado.getSenhaUsuario());		
+		ps.setInt(4, id);
 		
 		result = ps.executeUpdate();
 		conn.close();
@@ -126,6 +122,34 @@ public class UsuarioDAO {
 		result = ps.executeUpdate();
 		conn.close();
 		return result;
+	}
+	
+	public Usuario login(String email, String senha) throws Exception {
+		Connection conn = new ConnectionSQL().getConnection();
+		Usuario usuario = null;
+		String sql = "SELECT * FROM usuario WHERE email_usuario = ? AND senha_usuario = ?";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setString(1, email);
+		ps.setString(2, senha);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		
+		if (rs.next()) {
+			System.out.println(rs.getString("nome_usuario"));
+			usuario = new Usuario(
+					rs.getInt("id_usuario"),
+					rs.getString("nome_usuario"),
+					rs.getString("email_usuario"),
+					rs.getString("senha_usuario"),
+					rs.getTimestamp("data_nascimento_usuario"),
+					rs.getBoolean("adm_usuario")
+			);
+			
+		}
+		
+		conn.close();		
+		return usuario;
 	}
 	
 }

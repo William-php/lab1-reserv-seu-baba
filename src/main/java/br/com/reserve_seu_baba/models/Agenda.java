@@ -3,53 +3,26 @@ package br.com.reserve_seu_baba.models;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-public class Agenda {
-	private int idAgenda;
+public class Agenda {	
 	private Timestamp dataHoraInicioAgenda;
 	private Timestamp dataHoraFimAgenda;
 	private Campo campo;
-	private float valorTotalAgenda;
-	private Reserva reserva;
 	
-	public Agenda(
-			int idAgenda,
-			Timestamp dataHoraInicioAgenda,
-			Timestamp dataHoraFimAgenda,
-			Campo campo,
-			float valorTotalAgenda,
-			Reserva reserva
-	) {
-		this.idAgenda = idAgenda;
-		this.dataHoraInicioAgenda = dataHoraInicioAgenda;
-		this.dataHoraFimAgenda = dataHoraFimAgenda;
-		this.campo = campo;
-		this.valorTotalAgenda = valorTotalAgenda;
-		this.reserva = reserva;
-	}
+	private Reserva reserva;
 	
 	public Agenda(			
 			Timestamp dataHoraInicioAgenda,
 			Timestamp dataHoraFimAgenda,
-			Campo campo,
-			float valorTotalAgenda,
+			Campo campo,			
 			Reserva reserva
 	) {		
 		this.dataHoraInicioAgenda = dataHoraInicioAgenda;
 		this.dataHoraFimAgenda = dataHoraFimAgenda;
-		this.campo = campo;
-		this.valorTotalAgenda = valorTotalAgenda;
+		this.campo = campo;		
 		this.reserva = reserva;
 	}
 	
 	public Agenda() {}
-
-	public int getIdAgenda() {
-		return idAgenda;
-	}
-
-	public void setIdAgenda(int idAgenda) {
-		this.idAgenda = idAgenda;
-	}
 
 	public Timestamp getDataHoraInicioAgenda() {
 		return dataHoraInicioAgenda;
@@ -73,14 +46,6 @@ public class Agenda {
 
 	public void setCampo(Campo campo) {
 		this.campo = campo;
-	}
-
-	public float getValorTotalAgenda() {
-		return valorTotalAgenda;
-	}
-
-	public void setValorTotalAgenda(float valorTotalAgenda) {
-		this.valorTotalAgenda = valorTotalAgenda;
 	}
 
 	public Reserva getReserva() {

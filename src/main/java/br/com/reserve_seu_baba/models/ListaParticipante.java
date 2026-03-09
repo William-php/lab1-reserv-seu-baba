@@ -26,6 +26,10 @@ public class ListaParticipante {
 		this.nomesListaParticipante = new ArrayList<String>();
 	}
 	
+	public ListaParticipante(ArrayList<String> nomesListaParticipante) {
+		this.nomesListaParticipante = nomesListaParticipante;
+	}
+	
 	public ListaParticipante() {}
 
 	public int getIdListaParticipante() {

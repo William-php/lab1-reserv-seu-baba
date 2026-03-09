@@ -10,7 +10,6 @@ public class Reserva {
 	private Timestamp dataHoraPagamentoReserva;
 	private Timestamp dataHoraRegistroReserva;
 	private float valorTotalReserva;
-	private int statusReserva;
 	
 	public Reserva(
 			int idReserva,
@@ -18,16 +17,14 @@ public class Reserva {
 			int pagamentoReserva,
 			Timestamp dataHoraPagamentoReserva,
 			Timestamp dataHoraRegistroReserva,
-			float valorTotalReserva,
-			int statusReserva
+			float valorTotalReserva			
 	) {
 		this.idReserva = idReserva;
 		this.usuario = usuario;
 		this.pagamentoReserva = pagamentoReserva;
 		this.dataHoraPagamentoReserva = dataHoraPagamentoReserva;
 		this.dataHoraRegistroReserva = dataHoraRegistroReserva;
-		this.valorTotalReserva = valorTotalReserva;
-		this.statusReserva = statusReserva;
+		this.valorTotalReserva = valorTotalReserva;		
 	}
 	
 	public Reserva(			
@@ -35,15 +32,17 @@ public class Reserva {
 			int pagamentoReserva,
 			Timestamp dataHoraPagamentoReserva,
 			Timestamp dataHoraRegistroReserva,
-			float valorTotalReserva,
-			int statusReserva
+			float valorTotalReserva			
 	) {		
 		this.usuario = usuario;
 		this.pagamentoReserva = pagamentoReserva;
 		this.dataHoraPagamentoReserva = dataHoraPagamentoReserva;
 		this.dataHoraRegistroReserva = dataHoraRegistroReserva;
-		this.valorTotalReserva = valorTotalReserva;
-		this.statusReserva = statusReserva;
+		this.valorTotalReserva = valorTotalReserva;		
+	}
+	
+	public Reserva(Usuario usuario) {
+		this.usuario = usuario;
 	}
 	
 	public Reserva() {}
@@ -96,13 +95,6 @@ public class Reserva {
 		this.valorTotalReserva = valorTotalReserva;
 	}
 
-	public int getStatusReserva() {
-		return statusReserva;
-	}
-
-	public void setStatusReserva(int statusReserva) {
-		this.statusReserva = statusReserva;
-	}
 
 	@Override
 	public int hashCode() {

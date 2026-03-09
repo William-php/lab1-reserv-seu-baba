@@ -36,6 +36,7 @@ public class CampoDAO {
 		ps.setString(4, campo.getCodCampo());
 		ps.setFloat(5, campo.getPrecoCampo());
 		result = ps.executeUpdate();
+		conn.close();
 		return result;
 	}
 	
@@ -46,7 +47,7 @@ public class CampoDAO {
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setInt(1, id);
 		ResultSet rs = ps.executeQuery();
-		if (rs != null) {
+		if (rs.next()) {
 			campo = new Campo(
 					rs.getInt("id_campo"),
 					rs.getString("tipo_gramado_campo"),
@@ -56,6 +57,7 @@ public class CampoDAO {
 					rs.getFloat("preco_campo")
 			);
 		}
+		conn.close();
 		return campo;
 	}
 	
@@ -77,7 +79,7 @@ public class CampoDAO {
 			);
 			listaCampos.add(campo);
 		}
-		
+		conn.close();
 		return listaCampos;
 	}
 	
@@ -106,7 +108,7 @@ public class CampoDAO {
 	public int deleteCampo(int id) throws Exception {
 		Connection conn = new ConnectionSQL().getConnection();
 		int result = 0;
-		String sql = "DELETE TABLE campo WHERE id_campo = ?";
+		String sql = "DELETE FROM campo WHERE id_campo = ?";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setInt(1, id);
 		result = ps.executeUpdate();

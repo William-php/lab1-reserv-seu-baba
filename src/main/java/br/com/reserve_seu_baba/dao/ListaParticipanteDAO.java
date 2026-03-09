@@ -16,7 +16,7 @@ public class ListaParticipanteDAO {
 
     public ListaParticipanteDAO() {}
 
-    public int createListaParticipante(ListaParticipante lista) throws Exception {
+    public int createListaParticipante(ListaParticipante lista, int idReserva) throws Exception {
         Connection conn = new ConnectionSQL().getConnection();
         int result = 0;
 
@@ -24,16 +24,18 @@ public class ListaParticipanteDAO {
         PreparedStatement ps = conn.prepareStatement(sql);
 
         if (lista.getNomesListaParticipante() == null || lista.getNomesListaParticipante().isEmpty()) {
-            ps.setInt(1, lista.getReserva().getIdReserva());
+            ps.setInt(1, idReserva);
             ps.setString(2, null);
             result = ps.executeUpdate();
-        } else {
-            for (String nome : lista.getNomesListaParticipante()) {
-                ps.setInt(1, lista.getReserva().getIdReserva());
-                ps.setString(2, nome);
-                result += ps.executeUpdate();
-            }
+            return result;
+        } 
+        
+        for (String nome : lista.getNomesListaParticipante()) {
+        	ps.setInt(1, idReserva);
+            ps.setString(2, nome);
+            ps.addBatch();
         }
+        result = ps.executeBatch()[0];
         conn.close();
         return result;
     }
@@ -71,12 +73,12 @@ public class ListaParticipanteDAO {
                         rs.getInt("pagamento_reserva"),
                         rs.getTimestamp("data_hora_pagamento_reserva"),
                         rs.getTimestamp("data_hora_registro_reserva"),
-                        rs.getFloat("valor_total_reserva"),
-                        rs.getInt("status_reserva")
+                        rs.getFloat("valor_total_reserva")                        
                 );
 
                 lp = new ListaParticipante(reservaId, reserva);
                 map.put(reservaId, lp);
+                lp.setNomesListaParticipante(new ArrayList<String>());
             }
 
             String nome = rs.getString("nome_participante");
@@ -90,10 +92,10 @@ public class ListaParticipanteDAO {
     }
 
     public ListaParticipante getListaByReservaId(int reservaId) throws Exception {
-        String sql = "SELECT lista_participante.reserva AS reserva_id, lista_participante.nome_participante, reserva.*, usuario.* "
+        String sql = "SELECT lista_participante.*, reserva.*, usuario.* "
                 + "FROM lista_participante "
-                + "INNER JOIN reserva ON lista_participante.reserva = reserva.id_reserva "
-                + "INNER JOIN usuario ON reserva.usuario = usuario.id_usuario "
+                + "JOIN reserva ON lista_participante.reserva = reserva.id_reserva "
+                + "JOIN usuario ON reserva.usuario = usuario.id_usuario "
                 + "WHERE lista_participante.reserva = ?";
 
         Connection conn = new ConnectionSQL().getConnection();
@@ -102,9 +104,10 @@ public class ListaParticipanteDAO {
         ResultSet rs = ps.executeQuery();
 
         ListaParticipante lp = null;
-
+        
         while (rs.next()) {
-            if (lp == null) {
+        	
+            if (lp == null) {            	
                 Usuario usuario = new Usuario(
                         rs.getInt("id_usuario"),
                         rs.getString("nome_usuario"),
@@ -117,15 +120,16 @@ public class ListaParticipanteDAO {
                 Reserva reserva = new Reserva(
                         rs.getInt("id_reserva"),
                         usuario,
-                        rs.getInt("pagamento_reserva"),
+                        rs.getString("pagamento_reserva") == "PAGO" ? 2 : 1,
                         rs.getTimestamp("data_hora_pagamento_reserva"),
                         rs.getTimestamp("data_hora_registro_reserva"),
-                        rs.getFloat("valor_total_reserva"),
-                        rs.getInt("status_reserva")
+                        rs.getFloat("valor_total_reserva")                        
                 );
 
-                lp = new ListaParticipante(reservaId, reserva);
+                lp = new ListaParticipante(reservaId, reserva); 
+                lp.setNomesListaParticipante(new ArrayList<String>());
             }
+            
             String nome = rs.getString("nome_participante");
             if (nome != null && !nome.trim().isEmpty()) {
                 lp.addParticipante(nome);

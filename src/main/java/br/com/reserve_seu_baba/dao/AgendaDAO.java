@@ -17,30 +17,31 @@ public class AgendaDAO {
 	public int createAgenda(Agenda agenda) throws Exception {
 		Connection conn = new ConnectionSQL().getConnection();
 		String sql = "INSERT INTO agenda ("
-				+ "data_hora_inicio,"
-				+ "data_hora_fim,"
-				+ "campo,"
-				+ "valor_total_agenda,"
+				+ "data_hora_inicio_agenda,"
+				+ "data_hora_fim_agenda,"
+				+ "campo,"				
 				+ "reserva"
-				+ ") VALUES (?, ?, ?, ?, ?)";
+				+ ") VALUES (?, ?, ?, ?);";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setTimestamp(1, agenda.getDataHoraInicioAgenda());
 		ps.setTimestamp(2, agenda.getDataHoraFimAgenda());
-		ps.setInt(3, agenda.getCampo().getIdCampo());
-		ps.setFloat(4, agenda.getValorTotalAgenda());
-		ps.setInt(5, agenda.getReserva().getIdReserva());
+		ps.setInt(3, agenda.getCampo().getIdCampo());		
+		ps.setInt(4, agenda.getReserva().getIdReserva());
 		int result = ps.executeUpdate();
+		conn.close();
 		return result;
 	}
 	
-	public ArrayList<Agenda> getAllAgenda() throws Exception {
-		String sql = "SELECT campo.*, reserva.*, agenda.*, usuario.* FROM agenda"
-				+ " INNER JOIN campo ON agenda.campo = campo.id_campo"
-				+ " INNER JOIN reserva ON agenda.reserva = reserva.id_reserva"
-				+ " INNER JOIN usuario ON reserva.usuario = usuario.id_usuario";
+	public ArrayList<Agenda> getAllAgenda(int idUsuario) throws Exception {
+		String sql = "SELECT campo.*, reserva.*, agenda.*, usuario.* FROM agenda "
+				+ " INNER JOIN reserva ON agenda.reserva = reserva.id_reserva "
+				+ " INNER JOIN campo ON agenda.campo = campo.id_campo "
+				+ " INNER JOIN usuario ON reserva.usuario = usuario.id_usuario "
+				+ " WHERE usuario.id_usuario = ?;";
 		ArrayList<Agenda> agendas = new ArrayList<Agenda>();
 		Connection conn = new ConnectionSQL().getConnection();
 		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setInt(1, idUsuario);
 		ResultSet rs = ps.executeQuery();
 		
 		while (rs.next()) {
@@ -66,20 +67,17 @@ public class AgendaDAO {
 			Reserva reserva = new Reserva(
 						rs.getInt("id_reserva"),
 						usuario,
-						rs.getInt("pagamento_reserva"),
+						rs.getString("pagamento_reserva") == "PAGO" ? 1 : 2,
 						rs.getTimestamp("data_hora_pagamento_reserva"),
 						rs.getTimestamp("data_hora_registro_reserva"),
-						rs.getFloat("valor_total_reserva"),
-						rs.getInt("status_reserva")
+						rs.getFloat("valor_total_reserva")						
 						
 			);
 			//Criar o objeto agenda.
 			Agenda agenda = new Agenda(
-					rs.getInt("id_agenda"),
 					rs.getTimestamp("data_hora_inicio_agenda"),
 					rs.getTimestamp("data_hora_fim_agenda"),
-					campo,
-					rs.getFloat("valor_total_agenda"),
+					campo,					
 					reserva
 			);
 			agendas.add(agenda);
