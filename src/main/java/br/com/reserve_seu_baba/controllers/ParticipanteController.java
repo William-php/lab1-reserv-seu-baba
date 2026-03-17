@@ -28,20 +28,7 @@ public class ParticipanteController extends HttpServlet {
 		}
 	}
 	
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String queryString = request.getQueryString();
-		try {
-			switch (queryString) {
-			case "adicionarParticipante":
-				
-				break;
-				default:
-					break;
-			}
-		} catch (Exception e) {
-			System.err.println("ParticipanteController | doGet | e: " + e);
-		}
-	}
+	
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String param = request.getParameter("action");		

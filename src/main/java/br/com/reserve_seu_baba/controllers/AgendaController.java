@@ -32,15 +32,7 @@ public class AgendaController extends HttpServlet {
 		}
 	}
 	
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String queryString = request.getQueryString();
-		queryString = queryString.substring(6);
-		try {
-			
-		} catch (Exception e) {
-			System.err.println("AgendaController | doGet: " + e);
-		}
-	}
+	
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String param = request.getParameter("action");

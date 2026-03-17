@@ -56,6 +56,10 @@
                 switch (pages) {
                     // Rotas restritas ao ADM
                     case "listaUsuarios":
+           %>
+           				<jsp:include page="/pages/listaUsuarios.jsp"/>
+           <%
+                    	break;
                     case "adicionarCampo":
                     case "editarCampo":
                         if (isAdm) {

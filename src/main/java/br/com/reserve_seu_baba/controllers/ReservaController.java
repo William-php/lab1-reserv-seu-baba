@@ -30,18 +30,7 @@ public class ReservaController extends HttpServlet {
 		}
 	}
 	
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String queryString = request.getQueryString();
-		queryString = queryString.substring(6);
-		
-		try {
-			switch (queryString) {
-			
-			}
-		} catch (Exception e) {
-			System.err.println("ReservaController | GET: " + e);
-		}
-	}
+	
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("action");

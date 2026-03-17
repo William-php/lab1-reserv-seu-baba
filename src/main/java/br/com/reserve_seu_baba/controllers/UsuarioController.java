@@ -116,9 +116,8 @@ public class UsuarioController extends HttpServlet {
 		);		
 		this.usuarioDAO.createUsuarioDAO(usuarioLogado);
 		 
-		HttpSession session = request.getSession();
-		session.setAttribute("usuarioLogado", usuarioLogado);
-		response.sendRedirect("pages/home.jsp");
+		
+		response.sendRedirect("index.jsp");
 	}
 	
 	private void atualizarUsuariosPOST(HttpServletRequest request, HttpServletResponse response) throws Exception {		
@@ -134,14 +133,11 @@ public class UsuarioController extends HttpServlet {
 	}
 	
 	private void deletarUsuarioPOST(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		int deleted = this.usuarioDAO.deleteUsuario(Integer.parseInt(request.getParameter("idUsuario")));
-		if (deleted > 0) {
-			HttpSession session = request.getSession();
-			Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
-			session.setAttribute("usuarioLogado", session);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/home.jsp=listaUsuarios");
-			dispatcher.forward(request, response);
-		}
+	    int deleted = this.usuarioDAO.deleteUsuario(Integer.parseInt(request.getParameter("idUsuario")));
+	    if (deleted > 0) {
+	        HttpSession session = request.getSession();
+	        response.sendRedirect(request.getContextPath() + "/pages/home.jsp");
+	    }
 	}
 		
 	

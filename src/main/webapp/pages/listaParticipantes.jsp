@@ -47,7 +47,10 @@
                 </tbody>
             </table>
             
+            
         </div>
+        <br>
+        <a href="javascript:history.back()" class="btn-reserva">Voltar</a>
     <% 
         } else { 
     %>

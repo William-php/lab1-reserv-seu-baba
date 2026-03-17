@@ -8,7 +8,6 @@
     String idReserva = (reserva != null) ? String.valueOf(reserva.getIdReserva()) : "0";
 %>
 
-<div class="main-content">
     <div class="top-bar">
         <h2>Lista de Participantes</h2>
     </div>
@@ -36,7 +35,7 @@
 
         <button type="submit">Salvar Lista</button>        
     </form>
-</div>
+
 
 <script>
     // Script para adicionar novos campos de input sem recarregar a página

@@ -1,3 +1,4 @@
+
 <%@page import="br.com.reserve_seu_baba.models.Usuario"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
@@ -5,11 +6,13 @@
     // Recupera o usuário da sessão para decidir se é EDIÇÃO ou CADASTRO
     Usuario usuarioLogado = (Usuario) session.getAttribute("usuarioLogado");
     boolean isEdit = (usuarioLogado != null);
+    String loginClass = (usuarioLogado == null) ? "login" : "";
+    
 %>
 <head>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/index.css">
 </head>
-<div class="login">
+<div class="<%=loginClass%>">
 	<form method="post" action="${pageContext.request.contextPath}/UsuarioController">
     <input type="hidden" name="action" value="<%= isEdit ? "edit" : "add" %>"/>
     
